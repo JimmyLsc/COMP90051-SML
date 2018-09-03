@@ -20,28 +20,51 @@ def trainLogRegres(train_x, train_y, opts):
     startTime = time.time()
 
     numSamples, numFeatures = shape(train_x)
+    print("numSamples", numSamples)
+    print("numFeatures", numFeatures)
     alpha = opts['alpha']
     maxIter = opts['maxIter']
     weights = ones((numFeatures, 1))
+    print(shape(weights))
+    weights_list = []
 
     # optimize through gradient descent algorilthm
     # print('train_x', train_x)
     # print('weights', weights)
     for k in range(maxIter):
+        print("Iter", k)
         if opts['optimizeType'] == 'gradDescent':  # gradient descent algorilthm
+        #     print("train_x", train_x)
+        #     print("shape_x", shape(train_x))
+        #     print("weights", weights)
+        #     print("shape_weights", shape(weights))
             output = sigmoid(train_x * weights)
-
+            # print("output", output)
+            # print("output_shape", shape(output))
             error = train_y - output
+            # print("train_y_shape", shape(train_y))
+            # print("error", error)
+            # print("error_shape", shape(error))
             weights = weights + alpha * train_x.transpose() * error
+            print("weights", weights)
+            print("weights", weights.transpose().tolist()[0])
+            weights_list.append(weights.transpose().tolist()[0])
         elif opts['optimizeType'] == 'stocGradDescent':  # stochastic gradient descent
             for i in range(numSamples):
+                print("iter + index: ", k, i)
                 output = sigmoid(train_x[i, :] * weights)
+                # print('output', output)
+                # print('output', i, output)
+                # print('train_y[i, 0]', train_y[i, 0])
                 error = train_y[i, 0] - output
+                # print('error', error)
                 weights = weights + alpha * train_x[i, :].transpose() * error
+                # print('weights', weights)
         elif opts['optimizeType'] == 'smoothStocGradDescent':  # smooth stochastic gradient descent
             # randomly select samples to optimize for reducing cycle fluctuations
             dataIndex = list(range(numSamples))
             for i in range(numSamples):
+                # print("index: ", i)
                 alpha = 4.0 / (1.0 + k + i) + 0.01
                 randIndex = int(random.uniform(0, len(dataIndex)))
                 output = sigmoid(train_x[randIndex, :] * weights)

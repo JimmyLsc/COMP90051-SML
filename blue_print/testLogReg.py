@@ -8,7 +8,7 @@ from LogReg import trainLogRegres, showLogRegres, predicTestData
 import csv
 
 
-def loadTrainData(userlist, relation_dic):
+def loadTrainData():
     train_x = []
     train_y = []
     # fileIn = open('/Users/martinzhang/Desktop/testSet.txt')
@@ -16,16 +16,32 @@ def loadTrainData(userlist, relation_dic):
     #     lineArr = line.strip().split()
     #     train_x.append([1, float(lineArr[0]), float(lineArr[1])])
     #     train_y.append(float(lineArr[2]))
+    # # return mat(train_x), mat(train_y).transpose()
+    # for userA, relation in range(relation_dic):
+    #     for userB in range(userlist):
+    #         if user not in relation:
+    #             label = 0
+    #         else:
+    #             label = 1
+    #         train_x.append([1, float(lineArr[0]), float(lineArr[1])])
+    #         train_y.append(label)
     # return mat(train_x), mat(train_y).transpose()
-    for userA, relation in range(relation_dic):
-        for userB in range(userlist):
-            if user not in relation:
-                label = 0
-            else:
-                label = 1
-            train_x.append([1, float(lineArr[0]), float(lineArr[1])])
-            train_y.append(label)
-    return mat(train_x), mat(train_y).transpose()
+
+    with load('/Users/martinzhang/Desktop/compressed_test_7features.npz') as fd:
+        temp_matrix = fd["temptest"]
+        # d = [0, 1, 2, 3, 4, 5, 6]
+        length =10336114
+        a = ones(length)
+
+        temp_matrix_x = temp_matrix[0:length, 0:7]
+        result = insert(temp_matrix_x, 0, values=a, axis=1)
+        temp_matrix_y = temp_matrix[0:length, 7]
+        return mat(result), mat(temp_matrix_y).transpose()
+
+
+
+
+
 
 
 def loadTestData():
@@ -33,7 +49,10 @@ def loadTestData():
     # test_id = []
     test_x = []
     # test_y = []
-    file_path = open('/Users/martinzhang/Desktop/ml_data/test-public.txt')
+    # file_path = open('/Users/martinzhang/Desktop/ml_data/test-public.txt')
+
+
+
     index = -1
     for line in file_path.readlines():
         index += 1
@@ -55,26 +74,33 @@ def loadTestData():
 #
 ## step 1: load data
 print("step 1: load data...")
-train_x, train_y = loadData()
+train_x, train_y = loadTrainData()
 # for item in train_x:
 #     print item
 # test_list = loadTestData()
 # for test_data in test_list:
 #     test_x = train_x
 # test_y = train_y
-test_x = loadTestData()
+# test_x = loadTestData()
 
 
 
 
 ## step 2: training...
 print("step 2: training...")
-opts = {'alpha': 0.01, 'maxIter': 20, 'optimizeType': 'smoothStocGradDescent'}
+opts = {'alpha': 0.01, 'maxIter': 1, 'optimizeType': 'gradDescent'}
 optimalWeights = trainLogRegres(train_x, train_y, opts)
+# print(optimalWeights.transpose().tolist()[0])
+# for line in optimalWeights:
+    # print(line[0])
+print(optimalWeights.transpose().tolist()[0][1])
+print(shape(optimalWeights))
+
+
 
 ## step 3: predicting
-print("step 3: predicting...")
-accuracy = predicTestData(optimalWeights, test_x, test_y)
+# print("step 3: predicting...")
+# accuracy = predicTestData(optimalWeights, test_x, test_y)
 
 # ## step 4: show the result
 # print("step 4: show the result...")
