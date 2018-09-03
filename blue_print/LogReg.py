@@ -26,8 +26,8 @@ def trainLogRegres(train_x, train_y, opts):
             output = sigmoid(train_x * weights)
             error = train_y - output
             weights = weights + alpha * train_x.transpose() * error
-            print("weights", weights)
-            print("weights", weights.transpose().tolist()[0])
+            # print("weights", weights)
+            # print("weights", weights.transpose().tolist()[0])
             weights_list.append(weights.transpose().tolist()[0])
         elif opts['optimizeType'] == 'stocGradDescent':  # stochastic gradient descent
             for i in range(numSamples):
@@ -111,9 +111,11 @@ def showWeightDiagram(weight_list):
     plt.plot(x_values, y7_values, label='W7')
     plt.plot(x_values, y8_values, label='W8')
     plt.plot(x_values, y9_values, label='W9')
-    plt.plot(x_values, y10_values, label='W10')
-    plt.plot(x_values, y11_values, label='W11')
-    plt.plot(x_values, y12_values, label='W12')
+    plt.plot(x_values, y10_values, label='W10', linestyle=':')
+    plt.plot(x_values, y11_values, label='W11', linestyle=':')
+    plt.plot(x_values, y12_values, label='W12', linestyle=':')
+    plt.rcParams['savefig.dpi'] = 300
+    plt.rcParams['figure.dpi'] = 300
     plt.legend()
     plt.show()
     plt.savefig('weights.png', dpi=300)
