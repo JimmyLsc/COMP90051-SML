@@ -1,0 +1,12 @@
+    !1. a following count 
+    !2. a followed count
+    !3. b following count
+    !4. b followed count
+    5. a following/a followed
+    6. b following/b followed
+    7. if b following a
+    !8.a¡úc¡úb
+    !9.a¡úc¡ûb
+    !10.a¡ûc¡úb
+    !11.a¡ûc¡ûb
+    12. Jaccard's coeffcient common friends/total friends
